@@ -21,18 +21,18 @@ import static org.example.CallbackEntry.ThreePoint.*;
 public class   Callback {
     public static List<ThreePoint> getThreePoint(InputParam inputParam){
         List<ThreePoint> threePoints = new ArrayList<>();
-        InputParam inputParamNext = inputParam;
-        InputParam inputParamAfter = inputParam;
+        InputParam inputParamNext = coverent(inputParam);
+        InputParam inputParamAfter =  coverent(inputParam);
         Integer index = timeSubtractive(inputParam.getStartTime(),inputParam.getEndTime())+1;
         List<RaeParam> raeParamLists= new ArrayList<>();
         Map<Integer,List<RaeParam>> raeMap = new HashMap<>();
         for (int i = 0; i < index; i++) {
-            inputParam.setNowTime(addMinute(index,inputParam.getStartTime()));
-            inputParamNext.setNowTime(addMinute(index+1,inputParam.getStartTime()));
+            inputParam.setNowTime(addMinute(i,inputParam.getStartTime()));
+            inputParamNext.setNowTime(addMinute(i+1,inputParam.getStartTime()));
             if (getRaeParam(inputParam).getElevation()>0){
                 raeParamLists.add(getRaeParam(inputParam));
                 if (getRaeParam(inputParamNext).getElevation()<0){
-                    raeMap.put(index,raeParamLists);
+                    raeMap.put(i,raeParamLists);
                     raeParamLists = new ArrayList<>();
                 }
             }
@@ -110,6 +110,20 @@ public class   Callback {
         return threePoints;
     }
 
+    public static InputParam coverent(InputParam inputParam){
+        InputParam newInputParam = new InputParam();
+        newInputParam.setSiteLongitude(inputParam.getSiteLongitude());
+        newInputParam.setSiteLatitude(inputParam.getSiteLatitude());
+        newInputParam.setSiteAltitude(inputParam.getSiteAltitude());
+        newInputParam.setLine1(inputParam.getLine1());
+        newInputParam.setLine2(inputParam.getLine2());
+        newInputParam.setSiteName(inputParam.getSiteName());
+        newInputParam.setSatelliteName(inputParam.getSatelliteName());
+        newInputParam.setStartTime(inputParam.getStartTime());
+        newInputParam.setEndTime(inputParam.getEndTime());
+        newInputParam.setNowTime(inputParam.getNowTime());
+        return newInputParam;
+    }
     public static RaeParam getRaeParam(InputParam inputParam){
         RaeParam raeParam = new RaeParam();
         SGP4SatData data = new SGP4SatData();
