@@ -1,4 +1,4 @@
-package SGP4;
+package org.example.SGP4;
 
 public class SGP4unit {
     public static double pi = 3.14159265358979323846;

@@ -1,4 +1,4 @@
-package SGP4;
+package org.example.SGP4;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -1,9 +1,13 @@
-package CallbackEntry;
+package org.example.CallbackEntry;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class RaeParam {
+
+    private Date Time;
 
     private Double Range;
 

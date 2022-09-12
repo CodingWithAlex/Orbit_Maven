@@ -1,4 +1,4 @@
-package SGP4;
+package org.example.SGP4;
 
 /**
  * @ClassNameSubSatPoint

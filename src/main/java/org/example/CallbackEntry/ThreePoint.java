@@ -1,4 +1,6 @@
-package CallbackEntry;
+package org.example.CallbackEntry;
+
+import lombok.Data;
 
 /**
  * @ClassNameThreePoint
@@ -9,7 +11,11 @@ package CallbackEntry;
  * @Date2022/8/21 22:29
  * @Version1.0
  **/
+@Data
 public class ThreePoint {
+
+    //入站方位角
+    private String arcNumber;
 
     //入站方位角
     private Double startAzimuth;
@@ -46,8 +52,8 @@ public class ThreePoint {
 
     //出站星下点经纬度
     private SubSatPoint endSubSat;
-
-    public class SubSatPoint{
+    @Data
+    public static class SubSatPoint{
         //星下点经度
         private Double longitude;
 

@@ -1,4 +1,4 @@
-package CallbackEntry;
+package org.example.CallbackEntry;
 
 import java.util.Date;
 

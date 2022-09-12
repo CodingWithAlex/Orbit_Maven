@@ -1,4 +1,4 @@
-package SGP4;
+package org.example.SGP4;
 
 public class SGP4SatData {
     public int   satnum; // changed to int SEG

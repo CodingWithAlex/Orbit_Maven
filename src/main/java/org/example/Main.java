@@ -1,7 +1,7 @@
 package org.example;
 
-import CoordinateTrans.CoordTrans;
-import SGP4.*;
+import org.example.CoordinateTrans.CoordTrans;
+import org.example.SGP4.*;
 
 import java.util.Date;
 import java.util.List;

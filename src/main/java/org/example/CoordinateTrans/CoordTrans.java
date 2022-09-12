@@ -1,4 +1,4 @@
-package CoordinateTrans;
+package org.example.CoordinateTrans;
 
 import java.util.ArrayList;
 import java.util.List;
