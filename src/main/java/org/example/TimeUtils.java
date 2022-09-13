@@ -43,6 +43,9 @@ public class TimeUtils {
         inputParam.setSiteAltitude(0.58);
         inputParam.setSiteLongitude(107.4);
         inputParam.setSiteLatitude(34.42);
+        long actionTime = System.currentTimeMillis();
         List<ThreePoint> threePointLists = getThreePoint(inputParam);
+        long finalTime = System.currentTimeMillis();
+        System.out.println("程序运行时间："+(finalTime-actionTime)+"ms");
     }
 }

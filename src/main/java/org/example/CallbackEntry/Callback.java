@@ -22,10 +22,10 @@ public class   Callback {
     public static List<ThreePoint> getThreePoint(InputParam inputParam){
         List<ThreePoint> threePoints = new ArrayList<>();
         InputParam inputParamNext = coverent(inputParam);
-        InputParam inputParamAfter =  coverent(inputParam);
+        InputParam inputParamAfter = coverent(inputParam);
         Integer index = timeSubtractive(inputParam.getStartTime(),inputParam.getEndTime())+1;
         List<RaeParam> raeParamLists= new ArrayList<>();
-        Map<Integer,List<RaeParam>> raeMap = new HashMap<>();
+        Map<Integer,List<RaeParam>> raeMap = new TreeMap<>();
         for (int i = 0; i < index; i++) {
             inputParam.setNowTime(addMinute(i,inputParam.getStartTime()));
             inputParamNext.setNowTime(addMinute(i+1,inputParam.getStartTime()));
@@ -47,6 +47,7 @@ public class   Callback {
             inputParam.setNowTime(addSecond(1,inputParam.getNowTime()));
             RaeParam raeParam = getRaeParam(inputParam);
             threePoint.setArcNumber(inputParam.getSatelliteName()+"_"+inputParam.getSiteName()+"_"+key+"_"+(int)(1000000*Math.random()));
+            threePoint.setStartStationTime(inputParam.getNowTime());
             threePoint.setStartAzimuth(raeParam.getAzimuth());
             threePoint.setStartElevation(raeParam.getElevation());
             threePoint.setStartRange(raeParam.getRange());
@@ -61,6 +62,7 @@ public class   Callback {
             }
             inputParam.setNowTime(addSecond(-1,inputParam.getNowTime()));
             raeParam = getRaeParam(inputParam);
+            threePoint.setEndStationTime(inputParam.getNowTime());
             threePoint.setEndAzimuth(raeParam.getAzimuth());
             threePoint.setEndElevation(raeParam.getElevation());
             threePoint.setEndRange(raeParam.getRange());
@@ -71,34 +73,41 @@ public class   Callback {
 //            Integer raeSize = value.size();
 
             boolean isTop = false;
-            List<Integer> afterIndex = new ArrayList<>();
-            inputParam.setNowTime(addSecond(-60,value.get(0).getTime()));
-            for (int i = 0; i < 120; i++) {
-                inputParam.setNowTime(addSecond(i,value.get(0).getTime()));
-                inputParamNext.setNowTime(addSecond(i+1,value.get(0).getTime()));
-                inputParamAfter.setNowTime(addSecond(i-1,value.get(0).getTime()));
-                Double raeElevation = getRaeParam(inputParam).getElevation();
-                Double raeElevationNext = getRaeParam(inputParamNext).getElevation();
-                Double raeElevationAfter = getRaeParam(inputParamAfter).getElevation();
-                if (raeElevation>0){
-                    afterIndex.add(i);
-                }
-                if (raeElevation>raeElevationNext&&
-                        raeElevation>raeElevationAfter){
+            // 确定最高点的起始位置
+            int valueIndex = 0;
+            for (int i = 1; i < value.size()-1; i++) {
+                if (value.get(i).getElevation()>value.get(i+1).getElevation()&&value.get(i).getElevation()>value.get(i-1).getElevation()){
                     isTop = true;
+                    valueIndex = i;
                     break;
                 }
             }
-            if (!isTop){
-                inputParamNext.setNowTime(addSecond(60,value.get(0).getTime()));
-                inputParamAfter.setNowTime(addSecond(-60,value.get(0).getTime()));
+
+            Date startDate = addSecond(-60,value.get(valueIndex).getTime());
+            if (isTop){
+                for (int i = 0; i < 120; i++) {
+                    inputParam.setNowTime(addSecond(i,startDate));
+                    inputParamNext.setNowTime(addSecond(1,startDate));
+                    inputParamAfter.setNowTime(addSecond(-1,startDate));
+                    Double raeElevation = getRaeParam(inputParam).getElevation();
+                    Double raeElevationNext = getRaeParam(inputParamNext).getElevation();
+                    Double raeElevationAfter = getRaeParam(inputParamAfter).getElevation();
+                    if (raeElevation>raeElevationNext&&
+                            raeElevation>raeElevationAfter){
+                        break;
+                    }
+                }
+            }else {
+                inputParamNext.setNowTime(value.get(value.size()-1).getTime());
+                inputParamAfter.setNowTime(value.get(0).getTime());
                 if (getRaeParam(inputParamAfter).getElevation()>getRaeParam(inputParamNext).getElevation()){
-                    inputParam.setNowTime(addSecond(afterIndex.get(0),inputParamAfter.getNowTime()));
+                    inputParam.setNowTime(threePoint.getStartStationTime());
                 }else {
-                    inputParam.setNowTime(addSecond(afterIndex.get(afterIndex.size()-1),inputParamAfter.getNowTime()));
+                    inputParam.setNowTime(threePoint.getEndStationTime());
                 }
             }
             raeParam = getRaeParam(inputParam);
+            threePoint.setTopStationTime(inputParam.getNowTime());
             threePoint.setTopAzimuth(raeParam.getAzimuth());
             threePoint.setTopElevation(raeParam.getElevation());
             threePoint.setTopRange(raeParam.getRange());

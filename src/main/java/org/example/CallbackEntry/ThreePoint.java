@@ -2,6 +2,8 @@ package org.example.CallbackEntry;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @ClassNameThreePoint
  * @Discription
@@ -14,8 +16,11 @@ import lombok.Data;
 @Data
 public class ThreePoint {
 
-    //入站方位角
+    //弧段号
     private String arcNumber;
+
+    //入站时间
+    private Date startStationTime;
 
     //入站方位角
     private Double startAzimuth;
@@ -29,6 +34,9 @@ public class ThreePoint {
     //入站星下点经度纬度
     private SubSatPoint startSubSat;
 
+    //最高点时间
+    private Date topStationTime;
+
     //最高点方位角
     private Double topAzimuth;
 
@@ -40,6 +48,9 @@ public class ThreePoint {
 
     //最高点星下点经纬度
     private SubSatPoint topSubSat;
+
+    //出站点时间
+    private Date endStationTime;
 
     //出站方位角
     private Double endAzimuth;
